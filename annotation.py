@@ -1,0 +1,44 @@
+provinces = ['皖', '沪', '津', '渝', '冀', '晋', '蒙', '辽', '吉', '黑', '苏', '浙', '京', '闽', '赣', '鲁', '豫', '鄂', 
+'湘', '粤', '桂', '琼', '川', '贵', '云', '藏', '陕', '甘', '青', '宁', '新', '警', '学', 'O']
+
+alphabets = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
+'X', 'Y', 'Z', 'O']
+
+ads = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'O']
+
+
+def STRcoordinates_deal(STRcoordinates,i):
+    # STRcoordinates = STRcoordinates.split('_')
+    result = STRcoordinates[i]
+    x,y = int(result.split('&')[0]),int(result.split('&')[1])
+    result = x,y
+    return result
+
+
+
+def analyse_file(filename):
+    STRinformation = filename.split('-')
+    STRarea_ratio = STRinformation[0]
+    STRangle = STRinformation[1]
+    STRcoordinates = STRinformation[3]  #386&473_177&454_154&383_363&402 右下、左下、左上、右下
+    STRchars = STRinformation[4]
+
+    #坐标处理
+    coordinates = []
+    STRcoordinates = STRcoordinates.split('_')
+    right_bottom = STRcoordinates_deal(STRcoordinates,0)
+    left_top = STRcoordinates_deal(STRcoordinates,1)
+    left_bottom = STRcoordinates_deal(STRcoordinates,2)
+    right_top = STRcoordinates_deal(STRcoordinates,3)
+    coordinates = [right_bottom,left_top,left_bottom,right_top]
+
+    #车牌字符处理
+    LPchars = []
+    STRchars = STRchars.split('_')
+    LPchars.append(provinces[int(STRchars[0])])
+    LPchars.append(alphabets[int(STRchars[1])])
+    for i in range(2,7):
+        LPchars.append(ads[int(STRchars[i])])
+
+    return coordinates,LPchars
